@@ -45,7 +45,7 @@ public struct HTTPServiceConsoleLogger: HTTPServiceLogger {
 
     public func log(level: HTTPService.LogLevel, message: String, metadata: [String : String]?) {
         let metadataStr = metadata?.map { "\($0) = \($1)" }.joined(separator: " ")
-        print("[\(level)] - \(message)\(metadataStr != nil ? "\n\(metadataStr!)" : "")")
+       // print("[\(level)] - \(message)\(metadataStr != nil ? "\n\(metadataStr!)" : "")")
     }
 }
 
@@ -373,33 +373,33 @@ open class HTTPService {
                     request.allHTTPHeaderFields?.forEach {
                         metadata["<\($0.key)>"] = "\($0.value)"
                     }
-                    logger.debug("==========================================================")
-                    logger.debug("HEADER", metadata: metadata)
-                    logger.debug("REQUEST(\(request.httpMethod ?? "UNKNOWN"))",
-                                      metadata: ["<Request>":"\(request.debugDescription)"])
+//                    logger.debug("==========================================================")
+//                    logger.debug("HEADER", metadata: metadata)
+//                    logger.debug("REQUEST(\(request.httpMethod ?? "UNKNOWN"))",
+//                                      metadata: ["<Request>":"\(request.debugDescription)"])
                     if request.httpBody != nil {
                         logger.debug("",
                                       metadata: ["<Body>":"\(request.httpBody?.utf8String() ?? "")"])
                     }
-                    logger.debug("==========================================================")
+//                    logger.debug("==========================================================")
                 }
 
                 let task = self.session.dataTask(with: request) { data, resp, err in
                     let httpResponse = resp as? HTTPURLResponse
 
                     if let logger = self.config.logger {
-                        logger.debug("==========================================================")
-                        logger.debug("RESPONSE: HTTP STATUS: \(httpResponse?.statusCode ?? 0)")
-                        logger.debug("RESPONSE MIMETYPE: \(resp?.mimeType ?? "")")
-                        logger.debug("FOR REQUEST(\(request.httpMethod ?? "UNKNOWN"))",
-                                          metadata: ["<Request>":"\(request.debugDescription)"])
+//                        logger.debug("==========================================================")
+//                        logger.debug("RESPONSE: HTTP STATUS: \(httpResponse?.statusCode ?? 0)")
+//                        logger.debug("RESPONSE MIMETYPE: \(resp?.mimeType ?? "")")
+//                        logger.debug("FOR REQUEST(\(request.httpMethod ?? "UNKNOWN"))",
+//                                          metadata: ["<Request>":"\(request.debugDescription)"])
 
                         if resp?.mimeType == "application/octet-stream" {
                             logger.debug("RESPONSE DATA == <Octet-Stream binay data>")
                         } else {
                             logger.debug("RESPONSE DATA", metadata: ["<Data>":"\(data?.utf8String() ?? "null")"])
                         }
-                        logger.debug("==========================================================")
+//                        logger.debug("==========================================================")
                     }
 
                     if let neterr = err?.networkError { return seal.reject(neterr) }
